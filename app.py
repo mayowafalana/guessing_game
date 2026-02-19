@@ -44,7 +44,7 @@ def check_guess(guess):
         st.session_state.game_message = "Too high! Try a lower number."
 
 # --- App UI ---
-st.title("🎯 Guess the Number Game")
+st.title("🎯 Guess the Number Game - MAYOWA")
 
 st.write(st.session_state.game_message)
 
