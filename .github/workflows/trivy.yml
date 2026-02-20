@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: gitleaks detection
-        uses: gitleaks/gitleaks-action@v2.3.4
+        uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
