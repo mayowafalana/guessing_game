@@ -6,6 +6,7 @@ MIN_NUM = 1
 MAX_NUM = 100
 MAX_GUESSES = 7
 
+
 DB_PASSWORD = "Ghbfw_oifaGkBbf7646Ff@jg!"
 # Initialize the secret number and number of guesses in session state
 if 'secret_number' not in st.session_state:
