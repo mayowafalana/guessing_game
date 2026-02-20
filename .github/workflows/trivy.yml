@@ -28,8 +28,8 @@ jobs:
           security-checks: secret
           format: 'template'
           template: '@/contrib/sarif.tpl'
-          output: 'trivy-fs-results.sarif'
-          severity: 'CRITICAL,HIGH'
+          # output: 'trivy-fs-results.sarif'
+          # severity: 'CRITICAL,HIGH'
           exit-code: 1
 
 
