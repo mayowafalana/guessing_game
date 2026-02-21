@@ -7,6 +7,7 @@ MAX_NUM = 100
 MAX_GUESSES = 7
 
 
+
 # Initialize the secret number and number of guesses in session state
 if 'secret_number' not in st.session_state:
     st.session_state.secret_number = random.randint(MIN_NUM, MAX_NUM)
