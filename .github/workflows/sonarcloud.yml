@@ -42,6 +42,8 @@ jobs:
       # You may pin to the exact commit or the version.
       # uses: SonarSource/sonarqube-quality-gate-action@cf038b0e0cdecfa9e56c198bbb7d21d751d62c3b
         uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         #with:
       # Location of the scanner metadata report file
           #scanMetadataReportFile: # optional, default is .scannerwork/report-task.txt
