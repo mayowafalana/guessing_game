@@ -38,3 +38,13 @@ jobs:
             #-Dsonar.verbose= # optional, default is false
           # When you need the analysis to take place in a directory other than the one from which it was launched, default is .
           projectBaseDir: .
+      - name: SonarQube Quality Gate Check
+      # You may pin to the exact commit or the version.
+      # uses: SonarSource/sonarqube-quality-gate-action@cf038b0e0cdecfa9e56c198bbb7d21d751d62c3b
+        uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
+        #with:
+      # Location of the scanner metadata report file
+          #scanMetadataReportFile: # optional, default is .scannerwork/report-task.txt
+      # The maximum time (in seconds) to poll for SonarQube's Quality Gate status. Default: 300.
+          #pollingTimeoutSec: # optional, default is 300
+          
