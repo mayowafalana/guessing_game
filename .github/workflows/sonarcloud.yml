@@ -33,7 +33,8 @@ jobs:
       - name: Snyk Open Source monitor
         uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
       - name: SNYK SCA
-        run: snyk monitor --all-projects --severity-threshold=high --sarif > snyk-code.sarif
+        #run: snyk monitor --all-projects --severity-threshold=high --sarif > snyk-code.sarif
+        run: snyk monitor --all-projects --sarif > snyk-code.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         
