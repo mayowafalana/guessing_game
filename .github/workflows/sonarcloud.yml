@@ -36,7 +36,7 @@ jobs:
         with:
           args: # optional
           # Output a snyk.json file with results if running the test command
-          sarif: snyk-code.sarif
+          json: snyk-code.json
       - name: SNYK SCA
         #run: snyk monitor --all-projects --severity-threshold=high --sarif > snyk-code.sarif
         run: snyk monitor --all-projects
