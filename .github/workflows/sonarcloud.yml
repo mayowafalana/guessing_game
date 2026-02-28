@@ -31,8 +31,8 @@ jobs:
           # cd vote
           pip install -r requirements.txt
       - name: Snyk Open Source monitor
-        #uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-        uses: snyk/actions@0.4.0
+        uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+        #uses: snyk/actions@0.4.0
         #with:
           # args: # optional
           # # Output a snyk.json file with results if running the test command
