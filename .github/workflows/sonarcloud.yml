@@ -15,6 +15,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.2
+
+
+########### SNYK SCA & IAC SCANS
+      ##- uses: actions/checkout@v4
+      ##- name: Set up Snyk CLI to check for security issues
+        # Snyk can be used to break the build when it detects security issues.
+        # In this case we want to upload the SAST issues to GitHub Code Scanning
+        ##uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+        # env:
+        #   # This is where you will need to introduce the Snyk API token created with your Snyk account
+        #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Install Python dependencies
+        run: |
+          # cd vote
+          pip install -r requirements.txt
+      - name: Snyk Open Source monitor
+        run: snyk monitor --all-projects
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         
       # - name: Analyze with SonarCloud
 
@@ -52,22 +71,6 @@ jobs:
 
 
 
-      ########### SNYK SCA & IAC SCANS
-      ##- uses: actions/checkout@v4
-      ##- name: Set up Snyk CLI to check for security issues
-        # Snyk can be used to break the build when it detects security issues.
-        # In this case we want to upload the SAST issues to GitHub Code Scanning
-        ##uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-        # env:
-        #   # This is where you will need to introduce the Snyk API token created with your Snyk account
-        #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - name: Install Python dependencies
-        run: |
-          cd vote
-          pip install -r requirements.txt
-      - name: Snyk Open Source monitor
-        run: snyk monitor --all-projects
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      
           #pollingTimeoutSec: # optional, default is 300
           
