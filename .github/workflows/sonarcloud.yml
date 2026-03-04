@@ -103,16 +103,16 @@ jobs:
 
     - name: Build Image
       run: |
-        docker build -t ${{ vars.DOCKER_USER }}/streamlit-app:latest .
+        docker build -t ${{ vars.DOCKER_USER }}/guessing-game:latest .
 
     - name: Push Image
       run: |
-        docker push ${{ vars.DOCKER_USER }}/streamlit-app:latest
+        docker push ${{ vars.DOCKER_USER }}/guessing-game:latest
 
     - name: Run Container
       run: |
         docker run -d -p 8501:8501 --name streamlit-test \
-        ${{ vars.DOCKER_USER }}/streamlit-app:latest
+        ${{ vars.DOCKER_USER }}/guessing-game:latest
 
     - name: Wait for App
       run: |
