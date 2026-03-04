@@ -8,85 +8,118 @@ on:
 permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
-jobs:      
+jobs:
   Analysis:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
-
-
-########### SNYK SCA & IAC SCANS
+    - name: Checkout
+      uses: actions/checkout@v6.0.2
+      ########### SNYK SCA & IAC SCANS
       ##- uses: actions/checkout@v4
       ##- name: Set up Snyk CLI to check for security issues
-        # Snyk can be used to break the build when it detects security issues.
-        # In this case we want to upload the SAST issues to GitHub Code Scanning
-        ## uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-        # env:
-        #   # This is where you will need to introduce the Snyk API token created with your Snyk account
-        #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - name: Install Python dependencies
-        run: |
-          # cd vote
-          pip install -r requirements.txt
-      - name: Snyk Open Source monitor
-        uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-        #uses: snyk/actions@0.4.0
-        #with:
-          # args: # optional
-          # # Output a snyk.json file with results if running the test command
-          # json: snyk-code.json
-      - name: SNYK SCA
-        #run: snyk monitor --all-projects --severity-threshold=high --sarif > snyk-code.sarif
-        run: snyk monitor --all-projects
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-######### TEST QUALITY GATE
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python@master
-        continue-on-error: true # To make sure that SARIF upload gets called
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --sarif-file-output=snyk.sarif
-        
-      # - name: Analyze with SonarCloud
+      # Snyk can be used to break the build when it detects security issues.
+      # In this case we want to upload the SAST issues to GitHub Code Scanning
+      ## uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+      # env:
+      #   # This is where you will need to introduce the Snyk API token created with your Snyk account
+      #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    - name: Install Python dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Snyk Open Source monitor
+      uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+      #uses: snyk/actions@0.4.0
+      #with:
+      # args: # optional
+      # # Output a snyk.json file with results if running the test command
+      # json: snyk-code.json
+    - name: SNYK SCA
+      #run: snyk monitor --all-projects --severity-threshold=high --sarif > snyk-code.sarif
+      run: snyk monitor --all-projects
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    ######### TEST QUALITY GATE
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/python@master
+      continue-on-error: true # To make sure that SARIF upload gets called
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --sarif-file-output=snyk.sarif
+        # - name: Analyze with SonarCloud
 
-      #   # You can pin the exact commit or the version.
-      #   # uses: SonarSource/sonarcloud-github-action@v2.2.0
-      #   uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
-      #   with:
-      #     # Additional arguments for the SonarScanner CLI
-      #     args:
-      #       # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
-      #       # mandatory
-      #       -Dsonar.projectKey=mayowafalana_guessing_game
-      #       -Dsonar.organization=mayowafalana
-      #       # Comma-separated paths to directories containing main source files.
-      #       #-Dsonar.sources= # optional, default is project base directory
-      #       # Comma-separated paths to directories containing test source files.
-      #       #-Dsonar.tests= # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
-      #       # Adds more detail to both client and server-side analysis logs, activating DEBUG mode for the scanner, and adding client-side environment variables and system properties to the server-side log of analysis report processing.
-      #       #-Dsonar.verbose= # optional, default is false
-      #     # When you need the analysis to take place in a directory other than the one from which it was launched, default is .
-      #     projectBaseDir: .
-      # - name: SonarQube Quality Gate Check
-      # # You may pin to the exact commit or the version.
-      # # uses: SonarSource/sonarqube-quality-gate-action@cf038b0e0cdecfa9e56c198bbb7d21d751d62c3b
-      #   uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #   #with:
-      # # Location of the scanner metadata report file
-      #     #scanMetadataReportFile: # optional, default is .scannerwork/report-task.txt
-      # # The maximum time (in seconds) to poll for SonarQube's Quality Gate status. Default: 300.
+        #   # You can pin the exact commit or the version.
+        #   # uses: SonarSource/sonarcloud-github-action@v2.2.0
+        #   uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+        #   env:
+        #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
+        #   with:
+        #     # Additional arguments for the SonarScanner CLI
+        #     args:
+        #       # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
+        #       # mandatory
+        #       -Dsonar.projectKey=mayowafalana_guessing_game
+        #       -Dsonar.organization=mayowafalana
+        #       # Comma-separated paths to directories containing main source files.
+        #       #-Dsonar.sources= # optional, default is project base directory
+        #       # Comma-separated paths to directories containing test source files.
+        #       #-Dsonar.tests= # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
+        #       # Adds more detail to both client and server-side analysis logs, activating DEBUG mode for the scanner, and adding client-side environment variables and system properties to the server-side log of analysis report processing.
+        #       #-Dsonar.verbose= # optional, default is false
+        #     # When you need the analysis to take place in a directory other than the one from which it was launched, default is .
+        #     projectBaseDir: .
+        # - name: SonarQube Quality Gate Check
+        # # You may pin to the exact commit or the version.
+        # # uses: SonarSource/sonarqube-quality-gate-action@cf038b0e0cdecfa9e56c198bbb7d21d751d62c3b
+        #   uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
+        #   env:
+        #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        #   #with:
+        # # Location of the scanner metadata report file
+        #     #scanMetadataReportFile: # optional, default is .scannerwork/report-task.txt
+        # # The maximum time (in seconds) to poll for SonarQube's Quality Gate status. Default: 300.
 
 
 
 
-      
-          #pollingTimeoutSec: # optional, default is 300
-          
+
+        #pollingTimeoutSec: # optional, default is 300
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+
+    - name: Build Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USER }}/streamlit-app:latest .
+
+    - name: Push Image
+      run: |
+        docker push ${{ secrets.DOCKER_USER }}/streamlit-app:latest
+
+    - name: Run Container
+      run: |
+        docker run -d -p 8501:8501 --name streamlit-test \
+        ${{ secrets.DOCKER_USER }}/streamlit-app:latest
+
+    - name: Wait for App
+      run: |
+        sleep 30
+
+    - name: OWASP ZAP Baseline Scan
+      uses: zaproxy/action--full-scan@v0.8.0
+      with:
+        target: 'http://localhost:8501'
+        fail_action: true
