@@ -119,7 +119,7 @@ jobs:
         sleep 30
 
     - name: OWASP ZAP Baseline Scan
-      uses: zaproxy/action--full-scan@v0.8.0
+      uses: zaproxy/action-full-scan@v0.8.0
       with:
         target: 'http://localhost:8501'
         fail_action: true
