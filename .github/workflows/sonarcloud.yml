@@ -13,9 +13,9 @@ jobs:
   Analysis:
     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    # steps:
+    # - name: Checkout
+    #   uses: actions/checkout@v4
     #   ########## SNYK SCA & IAC SCANS
     #   ##- uses: actions/checkout@v4
     #   ##- name: Set up Snyk CLI to check for security issues
