@@ -109,11 +109,11 @@ jobs:
 
     - name: Build Image
       run: |
-        docker build -t ${{ vars.DOCKER_USER }}/guessing-game:v1.1.4 .
+        docker build -t ${{ vars.DOCKER_USER }}/guessing-game:v1.1.5 .
 
     - name: Push Image
       run: |
-        docker push ${{ vars.DOCKER_USER }}/guessing-game:v1.1.4
+        docker push ${{ vars.DOCKER_USER }}/guessing-game:v1.1.5
 
 #Access Prod Server for Docker Compose
     - name: Deploy to Server
