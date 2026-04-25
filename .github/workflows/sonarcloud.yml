@@ -113,17 +113,14 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
-        push: false
-        tags: mayowafalana/guessing-game:latest
-        #tags: mayowafalana/guessing-game:IMAGE_DIGEST
+        push: true
+        tags: |
+          mayowafalana/guessing-game:latest
+          mayowafalana/guessing-game:${{ github.sha }}
 
 ########## Use this to get the image hash and save it to env    
     - name: Get Digest
-      run: |
-        echo ${{ steps.docker_build.outputs.digest }}
-        echo "IMAGE_DIGEST=${{ steps.docker_build.outputs.digest }}" >> $GITHUB_ENV
-        docker tag mayowafalana/guessing-game:latest mayowafalana/guessing-game:IMAGE_DIGEST
-        docker push ${{ vars.DOCKER_USER }}/guessing-game:latest
+      run: echo "IMAGE_DIGEST=${{ steps.docker_build.outputs.digest }}" >> $GITHUB_ENV
      
         
 # ########## SPLIT UP BUILD & PUSH
