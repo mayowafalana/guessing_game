@@ -118,9 +118,9 @@ jobs:
         context: .
         push: true
         tags: |
-          # mayowafalana/guessing-game:latest
           mayowafalana/guessing-game:${{ env.DATE }}
-          # mayowafalana/guessing-game:${{ github.sha }}
+#         mayowafalana/guessing-game:latest     
+#         mayowafalana/guessing-game:${{ github.sha }}
 
 ########## Use this to get the image hash and save it to env    
     - name: Get Digest
