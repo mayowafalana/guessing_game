@@ -109,11 +109,11 @@ jobs:
 
     - name: Build Image
       run: |
-        docker build -t ${{ vars.DOCKER_USER }}/guessing-game:v1.1.1 .
+        docker build -t ${{ vars.DOCKER_USER }}/guessing-game:v1.1.2 .
 
     - name: Push Image
       run: |
-        docker push ${{ vars.DOCKER_USER }}/guessing-game:v1.1.1
+        docker push ${{ vars.DOCKER_USER }}/guessing-game:v1.1.2
 
 #Access Prod Server for Docker Compose
     - name: Deploy to Server
@@ -124,9 +124,9 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /home/ubuntu/my-app
-          docker login -u ${{ vars.DOCKER_USER }} -p ${{ secrets.DOCKER_TOKEN }}
-          docker compose pull
-          docker compose up -d
+          docker login -u ${{ vars.DOCKER_USER }} -p ${{ secrets.DOCKER_TOKEN }} --password-stdin
+          docker-compose pull
+          docker-compose up -d
 
 
     # - name: Run Container
