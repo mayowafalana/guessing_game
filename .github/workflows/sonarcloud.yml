@@ -54,9 +54,13 @@ jobs:
         username: ${{ vars.DOCKER_USER }}
         password: ${{ secrets.DOCKER_TOKEN }}
 
-    - name: Build Image
-      run: |
-        docker build -t guessing-game:latest .
+    - name: Build and NO push
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: false # Push is false here because I only want to build the image and run the OWASP DAST scan. I will push later in the CD pipeline if the SAST/SCA + OWASP DAST scans pass without any critical/high vulnerabilities.
+        tags: guessing-game:latest
+        load: true # This "loads" the image into your runner's local storage so ZAP can scan it
 
     ########## RUN OWASP ZAP SCAN ON THE BUILT IMAGE IN THE RUNNER
     - name: Run Container
@@ -74,6 +78,7 @@ jobs:
       with:
         target: 'http://localhost:8501'
         fail_action: false #True will fail the scan if any alert is found, False will not fail the scan regardless of the alerts found. Default is False.
+        allow_issue_writing: false #Allows the action to create issues in the repository with the scan results. Default is false.
         #cmd_options: '-z "-config globalalertfilter=Critical"'
     - name: Upload ZAP Report
       uses: actions/upload-artifact@v4
@@ -96,7 +101,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
-        push: true
+        push: true # I am push here because I am ready for delpoyment since the previous scans have passed.
         tags: |
           mayowafalana/guessing-game:${{ env.DATE }}
     #         mayowafalana/guessing-game:latest     
