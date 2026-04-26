@@ -80,12 +80,13 @@ jobs:
         fail_action: false #True will fail the scan if any alert is found, False will not fail the scan regardless of the alerts found. Default is False.
         allow_issue_writing: false #Allows the action to create issues in the repository with the scan results. Default is false.
         #cmd_options: '-z "-config globalalertfilter=Critical"'
-    - name: Upload ZAP Report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: zap-report
-        path: report_html.html
+        artifact_name: 'zap-report'
+    # - name: Upload ZAP Report
+    #   uses: actions/upload-artifact@v4
+    #   if: always()
+    #   with:
+    #     name: zap-report
+    #     path: report_html.html
     ###################### START CD PIPELINE AS A DIFFERENT JOB THAT DEPLOYS TO PRODUCTION IF THE SAST/SCA ANALYSIS -> OWASP DAST PASSES
     ######## Create a timestamp environment variable to use as a unique tag for the Docker image
   CD-DEPLOY:
