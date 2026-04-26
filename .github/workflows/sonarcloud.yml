@@ -12,30 +12,29 @@ permissions:
   issues: write # Allows OWASP DAST to post the scan results as an issue
 
 jobs:
-  # SAST-SCA_Analysis:
-  #   runs-on: ubuntu-latest
+  SAST-SCA_Analysis:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v4
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
 
-  #   ######## SNYK FOR SCA SCAN
-  #   - name: Snyk Open Source monitor
-  #     uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-  #     env:
-  #       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  #     with:
-  #       args: --sarif-file-output=snyk.sarif
-  #       projectBaseDir: .
+    ######## SNYK FOR SCA SCAN
+    - name: Snyk Open Source monitor
+      uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --sarif-file-output=snyk.sarif
 
-  #   ######## SONAR FOR SAST SCAN
-  #   - name: Analyze with SonarCloud
-  #     uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
-  #     env:
-  #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  #     with:
-  #       args: -Dsonar.projectKey=mayowafalana_guessing_game -Dsonar.organization=mayowafalana
-  #       projectBaseDir: .
+    ######## SONAR FOR SAST SCAN
+    - name: Analyze with SonarCloud
+      uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: -Dsonar.projectKey=mayowafalana_guessing_game -Dsonar.organization=mayowafalana
+        projectBaseDir: .
 
   ########## Build the Docker image and run OWASP ZAP scan on it in the runner before pushing to DockerHub
   OWASP-DAST-SCAN:
