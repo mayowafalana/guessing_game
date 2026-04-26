@@ -7,7 +7,9 @@ on:
 
 permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
-  security-events: write
+  security-events: write # allows OWASP DAST to show results in the Security tab
+  contents: write # allows OWASP DAST to create issues/reports
+  issues: write # Allows OWASP DAST to post the scan results as an issue
 
 jobs:
   SAST-SCA_Analysis:
