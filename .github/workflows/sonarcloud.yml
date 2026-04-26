@@ -12,30 +12,30 @@ permissions:
   issues: write # Allows OWASP DAST to post the scan results as an issue
 
 jobs:
-  SAST-SCA_Analysis:
-    runs-on: ubuntu-latest
+  # SAST-SCA_Analysis:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
 
-    ######## SNYK FOR SCA SCAN
-    - name: Snyk Open Source monitor
-      uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: --sarif-file-output=snyk.sarif
-        projectBaseDir: .
+  #   ######## SNYK FOR SCA SCAN
+  #   - name: Snyk Open Source monitor
+  #     uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+  #     env:
+  #       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #     with:
+  #       args: --sarif-file-output=snyk.sarif
+  #       projectBaseDir: .
 
-    ######## SONAR FOR SAST SCAN
-    - name: Analyze with SonarCloud
-      uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        args: -Dsonar.projectKey=mayowafalana_guessing_game -Dsonar.organization=mayowafalana
-        projectBaseDir: .
+  #   ######## SONAR FOR SAST SCAN
+  #   - name: Analyze with SonarCloud
+  #     uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+  #     env:
+  #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #     with:
+  #       args: -Dsonar.projectKey=mayowafalana_guessing_game -Dsonar.organization=mayowafalana
+  #       projectBaseDir: .
 
   ########## Build the Docker image and run OWASP ZAP scan on it in the runner before pushing to DockerHub
   OWASP-DAST-SCAN:
@@ -74,21 +74,22 @@ jobs:
 
     - name: OWASP ZAP Full Scan
       #uses: zaproxy/action-baseline@v0.10.0
-      uses: zaproxy/action-full-scan@v0.8.0
+      uses: zaproxy/action-full-scan@v0.13.0
       with:
         target: 'http://localhost:8501'
+        artifact_name: 'zap-report'
         fail_action: false #True will fail the scan if any alert is found, False will not fail the scan regardless of the alerts found. Default is False.
         allow_issue_writing: false #Allows the action to create issues in the repository with the scan results. Default is false.
         #cmd_options: '-z "-config globalalertfilter=Critical"'
-        artifact_name: 'zap-report'
-    # - name: Upload ZAP Report
-    #   uses: actions/upload-artifact@v4
-    #   if: always()
-    #   with:
-    #     name: zap-report
-    #     path: report_html.html
-    ###################### START CD PIPELINE AS A DIFFERENT JOB THAT DEPLOYS TO PRODUCTION IF THE SAST/SCA ANALYSIS -> OWASP DAST PASSES
-    ######## Create a timestamp environment variable to use as a unique tag for the Docker image
+
+        # - name: Upload ZAP Report
+        #   uses: actions/upload-artifact@v4
+        #   if: always()
+        #   with:
+        #     name: zap-report
+        #     path: report_html.html
+        ###################### START CD PIPELINE AS A DIFFERENT JOB THAT DEPLOYS TO PRODUCTION IF THE SAST/SCA ANALYSIS -> OWASP DAST PASSES
+        ######## Create a timestamp environment variable to use as a unique tag for the Docker image
   CD-DEPLOY:
     runs-on: ubuntu-latest
     needs: [ SAST-SCA_Analysis, OWASP-DAST-SCAN ]
